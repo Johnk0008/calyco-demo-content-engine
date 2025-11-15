@@ -1,4 +1,4 @@
-🟦 Calyco AI Content Engine 
+# 🟦 Calyco AI Content Engine 
 
 A modular, automated AI-powered content pipeline for trends → insights → content generation → structured outputs.
 
@@ -230,7 +230,7 @@ Email: **[johnykumar0008@gmail.com](mailto:johnykumar0008@gmail.com)**
 
 GitHub: **[https://github.com/johnk0008](https://github.com/johnk0008)**
 
-LinkedIn: **linkedin.com/in/johnk0008**
+LinkedIn: **[https://linkedin.com/in/johnk0008](https://linkedin.com/in/johnk0008)** 
 
 ---
 
