@@ -1,0 +1,56 @@
+Write a detailed, SEO-optimized long-form blog article (1200–1800 words).
+
+Topic: {topic}
+Context: Based on insights from Google Trends, competitor analysis, and paint/home décor market news.
+
+Tone:
+- Confident, modern, practical, and clearly structured.
+- Never mention AI or automation.
+- Never copy competitor language.
+
+Structure:
+
+# Title
+A strong, SEO-focused headline.
+
+## Introduction
+- Introduce the topic.
+- Connect it to home décor trends or consumer needs.
+
+## Trend Insight
+- Summaries from Google Trends or industry signals.
+- Describe why the topic is rising.
+
+## Core Deep Dive (H2 Sections)
+Add 3–5 subsections with H2/H3 structure explaining:
+- Key concepts  
+- Techniques  
+- Color ideas  
+- Practical advice
+
+## Calyco-Aligned Guidance
+Explain how the trend connects with Calyco’s positioning:
+- Low-VOC paints  
+- Modern finishes  
+- High durability  
+
+## Step-by-Step Guide (If applicable)
+A clear how-to section.
+
+## Pro Tips
+Bullet list.
+
+## Conclusion
+Summarize insights + link back to Calyco’s value.
+
+## Internal Link Suggestions
+Provide 3 internal link anchor texts.
+
+## Image Prompts
+For each major section include image prompts such as:
+"Modern living room with texture-painted accent wall, neutral tones, soft lighting"
+
+Requirements:
+- Never mention “AI-generated.”
+- No repeated phrases.
+- Must be unique and human-like.

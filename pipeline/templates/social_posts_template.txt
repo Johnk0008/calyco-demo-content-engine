@@ -1,0 +1,31 @@
+Generate 6 social media posts (3 for Instagram, 3 for LinkedIn).
+
+For each post include:
+
+Platform:
+Caption:
+Hashtags:
+Image_Prompt:
+Suggested_Schedule_Date (within next 15 days):
+
+Rules:
+- Tone must be modern, trend-aware, simple, and premium.
+- Never mention AI.
+- Hashtags: 12–18 per post.
+- Image prompts must relate to paints, textures, interior design, or outdoor coatings.
+- LinkedIn posts should be slightly more technical.
+- Instagram posts should be more visual and lifestyle-oriented.
+
+Output Format Example:
+
+Platform: Instagram
+Caption: 
+Hashtags: 
+Image_Prompt:
+Suggested_Schedule_Date:
+
+Platform: LinkedIn
+Caption:
+Hashtags:
+Image_Prompt:
+Suggested_Schedule_Date:

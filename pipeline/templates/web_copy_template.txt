@@ -1,0 +1,31 @@
+Write Calyco-style product or category content in JSON format.
+
+Brand Context:
+- Calyco Paints is a modern, online-first, performance-focused paint brand.
+- Key strengths: low VOC, superior coverage, washable finishes, fast recoat times, durable outdoor performance.
+- Never mention AI or automation.
+- Do not copy competitor tone; use a clean, modern, technical yet consumer-friendly voice.
+
+Output Format (JSON):
+{
+  "title": "",
+  "subtitle": "",
+  "description": "",
+  "features": [
+    ""
+  ],
+  "use_cases": [
+    ""
+  ],
+  "finish": "",
+  "coverage": "",
+  "application_steps": [
+    ""
+  ],
+  "image_prompt": ""
+}
+
+Instructions:
+- Ensure the content feels premium, modern, and aligned with Calyco’s brand.
+- Highlight performance benefits, application simplicity, and durable finishes.
+- Include a descriptive image prompt for generating a product image or lifestyle visual.
