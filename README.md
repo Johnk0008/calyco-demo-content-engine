@@ -1,7 +1,6 @@
----
-# 🟦 **Calyco AI Content Engine — Demo Assignment**
+🟦 Calyco AI Content Engine — Demo Assignment
 
-*A modular, automated AI-powered content pipeline for trends → insights → content generation → structured outputs.*
+A modular, automated AI-powered content pipeline for trends → insights → content generation → structured outputs.
 
 ---
 
@@ -224,9 +223,13 @@ The script includes:
 ## 👨‍💻 Author
 
 **Johny Kumar**
+
 AI/ML & Mobile App Developer
+
 Email: **[johnykumar0008@gmail.com](mailto:johnykumar0008@gmail.com)**
+
 GitHub: **[https://github.com/johnk0008](https://github.com/johnk0008)**
+
 * LinkedIn: **linkedin.com/in/johnk0008**
 
 ---
@@ -236,12 +239,15 @@ GitHub: **[https://github.com/johnk0008](https://github.com/johnk0008)**
 This project demonstrates **end-to-end AI automation engineering**:
 
 ✔ Trend scraping
+
 ✔ Competitor data collection
+
 ✔ Structured content generation
+
 ✔ Clean exports
+
 ✔ Scalable architecture
 
----
 ---
 
 ## 🤝 Contributing
