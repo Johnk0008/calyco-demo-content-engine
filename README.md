@@ -1,5 +1,3 @@
----
-
 # 🚀 **Calyco Automated Content Engine (Fully Automated AI Pipeline)**
 
 *A production-grade demo system showcasing automated content generation for the paint & home-decor industry.*
@@ -274,9 +272,12 @@ This demo was created as part of an AI Automation assignment for **Calyco Paints
 
 **Johny Kumar**
 AI/ML & Mobile App Developer
+
 Email: **[johnykumar0008@gmail.com](mailto:johnykumar0008@gmail.com)**
+
 GitHub: **[https://github.com/johnk0008](https://github.com/johnk0008)**
-* LinkedIn: **linkedin.com/in/johnk0008**
+
+LinkedIn: **[linkedin.com/in/johnk0008](https://www.linkedin.com/in/johnk0008/)**
 
 ---
 
