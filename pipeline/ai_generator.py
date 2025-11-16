@@ -1,100 +1,171 @@
 import os
 import json
-from dotenv import load_dotenv
+from slugify import slugify
 import google.generativeai as genai
 
+# -----------------------------------------
+# Load environment
+# -----------------------------------------
+from dotenv import load_dotenv
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
-model_name = os.getenv("GEMINI_MODEL")
+API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=API_KEY)
 
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel(model_name)
+TEXT_MODEL = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+IMAGE_MODEL = genai.GenerativeModel("models/gemini-1.0-pro-vision-latest")
 
-def generate_with_gemini(prompt):
-    response = model.generate_content(prompt)
-    return response.text
+# -----------------------------------------
+# Helpers
+# -----------------------------------------
+def write_file(path, content):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        f.write(content)
 
+def generate_text(prompt):
+    try:
+        response = TEXT_MODEL.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        print("⚠️ Gemini text generation failed:", e)
+        return "Placeholder text (AI offline)."
 
-# ------------ Example Templates --------------
+def generate_image(prompt, slug):
+    try:
+        response = IMAGE_MODEL.generate_content(prompt)
+        # Extract the first file
+        img = response._result.candidates[0].content.parts[0].inline_data
+        img_bytes = img.data
 
+        path = f"outputs/images/{slug}.png"
+        os.makedirs("outputs/images", exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(img_bytes)
+
+        print("🖼 Image saved:", path)
+        return path
+
+    except Exception as e:
+        print("⚠️ Gemini image generation failed:", e)
+        return None
+
+# --------------------------------------------------------
+# 1. Generate Web Copy
+# --------------------------------------------------------
 def generate_web_copy():
+    title = "Interior Emulsion Paints – Calyco"
+    slug = slugify(title)
+
     prompt = """
-    Create JSON web copy for a Calyco paint product page.
-    Include:
-    - title
-    - subtitle
-    - features
-    - usage
-    - why_calcyo
-    - SEO meta
-    Format ONLY in JSON.
-    """
-    output = generate_with_gemini(prompt)
+Write a polished, brand-safe product page for Calyco interior emulsion paints.
+Tone: premium, clean, helpful.
+Avoid AI mentions.
+Include: features, benefits, use cases, durability, VOC levels.
+"""
 
-    os.makedirs("outputs/web_copy", exist_ok=True)
-    with open("outputs/web_copy/web_copy.json", "w") as f:
-        f.write(output)
+    print("🧩 Generating web copy via Gemini...")
+    body = generate_text(prompt)
 
-    print("Web copy generated!")
+    data = {
+        "title": title,
+        "slug": slug,
+        "description": "Premium interior emulsion paints with low VOC and smooth finish.",
+        "body": body
+    }
 
+    out_path = f"outputs/web_copy/{slug}.json"
+    write_file(out_path, json.dumps(data, indent=2))
 
-def generate_blog():
-    prompt = """
-    Write a 1200-word SEO blog about 'Trending Home Paint Colors 2025'
-    Tone: Calyco brand-safe, no mention of AI.
-    Include:
-    - H1
-    - H2 sections
-    - SEO meta title & meta description
-    - JSON-LD schema in final output
-    """
-    output = generate_with_gemini(prompt)
+    # image generation
+    img_prompt = """
+High-quality interior home design photo, beautiful pastel wall paint,
+soft natural lighting, minimalistic modern Indian decor, DSLR realism, 8k.
+"""
+    generate_image(img_prompt, slug)
 
-    os.makedirs("outputs/blogs", exist_ok=True)
-    with open("outputs/blogs/color_trends_2025.md", "w") as f:
-        f.write(output)
+    print("✍️ Web copy saved:", out_path)
+    return data
 
-    print("Blog generated!")
+# --------------------------------------------------------
+# 2. Blog Generation
+# --------------------------------------------------------
+def generate_blog(topic="Trending Home Paint Colors 2025"):
+    slug = slugify(topic)
 
+    prompt = f"""
+Write a detailed blog article titled '{topic}' from the perspective of Calyco Paints.
+Tone: expert but friendly.
+Avoid AI mentions.
+Include: trends, materials, textures, consumer behavior, color palettes.
+Length: ~700 words.
+"""
 
+    print("🧠 Generating blog via Gemini...")
+    content = generate_text(prompt)
+
+    data = {
+        "title": topic,
+        "slug": slug,
+        "body": content
+    }
+
+    out_path = f"outputs/blogs/{slug}.md"
+    write_file(out_path, content)
+
+    # Blog image
+    img_prompt = """
+Modern wall paint texture palette, trending 2025 colors, soft gradients,
+minimal clean layout, aesthetic render.
+"""
+    generate_image(img_prompt, slug)
+
+    print("📝 Blog saved:", out_path)
+    return data
+
+# --------------------------------------------------------
+# 3. Social Media Content
+# --------------------------------------------------------
 def generate_social_posts():
     prompt = """
-    Generate 10 social media posts with:
-    - Instagram captions
-    - LinkedIn captions
-    - Hashtags
-    Output in CSV format.
-    """
-    output = generate_with_gemini(prompt)
+Generate 5 short Instagram captions for a paint brand.
+Tone: exciting, modern, aesthetic.
+Avoid AI mentions.
+"""
 
-    os.makedirs("outputs/social", exist_ok=True)
-    with open("outputs/social/posts.csv", "w") as f:
-        f.write(output)
+    print("📣 Generating social posts via Gemini...")
+    text = generate_text(prompt)
 
-    print("Social posts generated!")
+    posts = text.split("\n")
+    posts = [p.strip("-• ") for p in posts if p.strip()]
 
+    data = {"posts": posts}
 
+    out_path = "outputs/social/social_posts.json"
+    write_file(out_path, json.dumps(data, indent=2))
+
+    print("📤 Social posts saved:", out_path)
+    return data
+
+# --------------------------------------------------------
+# 4. Ads
+# --------------------------------------------------------
 def generate_ads():
     prompt = """
-    Write:
-    - 10 Google Ads headlines
-    - 10 Google Ads descriptions
-    - 10 Facebook Ads primary text
-    - 10 WhatsApp short texts
-    Format in CSV.
-    """
-    output = generate_with_gemini(prompt)
+Write 5 Google/Meta ad headlines + descriptions for Calyco Paints.
+Tone: clean, premium, high-conversion.
+"""
 
-    os.makedirs("outputs/ads", exist_ok=True)
-    with open("outputs/ads/ad_copies.csv", "w") as f:
-        f.write(output)
+    print("💡 Generating ads via Gemini...")
+    text = generate_text(prompt)
 
-    print("Ads generated!")
+    ads = text.split("\n")
+    ads = [a.strip("-• ") for a in ads if a.strip()]
 
+    data = {"ads": ads}
 
-if __name__ == "__main__":
-    generate_web_copy()
-    generate_blog()
-    generate_social_posts()
-    generate_ads()
+    out_path = "outputs/ads/ad_snippets.json"
+    write_file(out_path, json.dumps(data, indent=2))
+
+    print("📣 Ads saved:", out_path)
+    return data

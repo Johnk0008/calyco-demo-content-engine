@@ -7,7 +7,7 @@ def export_social_posts():
         ["Instagram", "Top texture ideas for 2025", "#home #paint", "2025-11-12"],
         ["LinkedIn", "Low-VOC paints rising demand", "#decor #painting", "2025-11-13"],
     ]
-
+    
     df = pd.DataFrame(rows, columns=["Platform", "Caption", "Hashtags", "Schedule"])
 
     os.makedirs("outputs/social_posts", exist_ok=True)
