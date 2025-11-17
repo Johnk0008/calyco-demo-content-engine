@@ -1,53 +1,41 @@
-# run_all.py
-from pipeline import (
-    scrape_google_trends,
-    scrape_news,
-    scrape_competitors,
-    scrape_instagram_profile,
+from pipeline.scrapers.news_scraper import scrape_news
+from pipeline.ai_generator import (
     generate_web_copy,
     generate_blog,
     generate_social_posts,
-    generate_ads,
+    generate_ads
 )
 from pipeline.qc import run_quality_checks
+from pipeline.dashboard import build_dashboard
 
-def run_pipeline():
-    print("\n🚀 Running improved fully automated Calyco demo pipeline...\n")
+print("🚀 Running Calyco Free-Tier Demo Pipeline...\n")
 
-    print("1️⃣ Scraping Google Trends...")
-    scrape_google_trends()
+# 1. Scrape basic industry news (local demo)
+scrape_news()
 
-    print("2️⃣ Scraping Industry News...")
-    scrape_news()
+# 2. Web copy
+print("✍️ Generating web copy...")
+web_copy = generate_web_copy()
 
-    print("3️⃣ Scraping Competitors...")
-    scrape_competitors()
+# 3. Blog
+print("\n📝 Generating blog...")
+blog = generate_blog()
 
-    print("4️⃣ Scraping Social Feeds...")
-    scrape_instagram_profile("asianpaints")
+# 4. Social posts
+print("\n📣 Generating social content...")
+social = generate_social_posts()
 
-    print("\n✍️ 5. Generating Web Copy...")
-    web_copy = generate_web_copy()
+# 5. Ads
+print("\n💡 Generating ad snippets...")
+ads = generate_ads()
 
-    print("\n📝 6. Generating Blogs...")
-    blog = generate_blog()
+# 6. QC
+print("\n🔎 Running Quality Checks...")
+qc_web = run_quality_checks(web_copy["body"])
+qc_blog = run_quality_checks(blog["body"])
 
-    print("\n📣 7. Generating Social Media Posts...")
-    social = generate_social_posts()
+# 7. Dashboard
+print("\n📊 Building dashboard...")
+build_dashboard()
 
-    print("\n📢 8. Generating Ads...")
-    ads = generate_ads()
-
-    print("\n🔍 9. Running Quality Checks...")
-
-    qc_web = run_quality_checks(web_copy["body"])
-    qc_blog = run_quality_checks(blog["body"])
-
-    print("\nQC Results:")
-    print("Web Copy:", qc_web)
-    print("Blog:", qc_blog)
-
-    print("\n🎉 Pipeline Complete!")
-
-if __name__ == "__main__":
-    run_pipeline()
+print("\n🎉 Pipeline Complete — Free Image + Full Automation Ready!")

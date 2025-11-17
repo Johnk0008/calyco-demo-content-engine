@@ -1,49 +1,101 @@
-# pipeline/image_generator.py
-import os, json, hashlib
-from dotenv import load_dotenv
-load_dotenv()
+"""
+Free Image Generator using HuggingFace Stable Diffusion
+No paid APIs required.
+"""
 
-# If using google generative image (Gemini)
-try:
-    import google.generativeai as genai
-    GEMINI = True
-except Exception:
-    GEMINI = False
+import os
+import requests
 
-CACHE_DIR = "outputs/images"
-os.makedirs(CACHE_DIR, exist_ok=True)
+# Ensure output directory exists
+os.makedirs("outputs/images", exist_ok=True)
 
-def prompt_hash(prompt):
-    return hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:12]
+# Free-tier HF SD model
+# HF_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2"
 
-def save_image_bytes(image_bytes, out_path):
-    with open(out_path, "wb") as f:
-        f.write(image_bytes)
+# Optional auth token (free) — improves rate limit slightly
+HF_TOKEN = os.getenv("HF_TOKEN")
+HEADERS = {"Authorization": f"Bearer {HF_TOKEN}"} if HF_TOKEN else {}
 
-def generate_image(prompt, style="photorealistic", model=os.getenv("GEMINI_IMAGE_MODEL","gemini-image-1.0")):
-    """
-    Generates an image for a prompt and caches it.
-    Returns path to saved image.
-    """
-    key = prompt_hash(prompt)
-    out_file = os.path.join(CACHE_DIR, f"{key}.png")
-    if os.path.exists(out_file):
-        return out_file
+def generate_image(prompt, slug):
 
-    if GEMINI:
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        img = genai.images.generate(
-            model=model,
-            prompt=prompt,
-            size="1024x1024"
+    HF_API_URL = (
+        "https://router.huggingface.co/hf-inference/models/"
+        "stabilityai/stable-diffusion-xl-base-1.0"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {os.getenv('HF_API_KEY')}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "negative_prompt": "blurry, distorted, low quality",
+            "guidance_scale": 7.0
+        }
+    }
+
+    try:
+        response = requests.post(
+            HF_API_URL,
+            headers=headers,
+            json=payload,
+            timeout=60
         )
-        # gemini returns base64 or url depending on sdk — handle accordingly
-        b64 = img[0].b64_json if hasattr(img[0], "b64_json") else img[0].b64
-        import base64
-        save_image_bytes(base64.b64decode(b64), out_file)
-        return out_file
 
-    # fallback: if no Gemini installed, write prompt to file for manual generation
-    with open(out_file.replace(".png", ".prompt.txt"), "w") as f:
-        f.write(prompt)
-    return out_file
+        if response.status_code == 200:
+            import base64
+            result = response.json()
+
+            if "generated_image" in result:
+                img_b64 = result["generated_image"]
+                img_bytes = base64.b64decode(img_b64)
+
+                path = f"outputs/images/{slug}.png"
+                os.makedirs("outputs/images", exist_ok=True)
+
+                with open(path, "wb") as f:
+                    f.write(img_bytes)
+
+                print("🖼️ HuggingFace image saved:", path)
+                return path
+            else:
+                print("⚠️ HF response missing image:", result)
+
+        else:
+            print("⚠️ HF Image Generation Failed:", response.text)
+
+    except Exception as e:
+        print("⚠️ HF Image Generation Error:", str(e))
+
+    # fallback to stock
+    return fallback_stock_image(slug)
+
+
+
+def use_stock_image(slug):
+    """
+    Uses free-license fallback stock image if SD fails.
+    """
+
+    src = "assets/placeholder.jpg"
+    dst = f"outputs/images/{slug}.jpg"
+
+    if os.path.exists(src):
+        with open(src, "rb") as f_src:
+            with open(dst, "wb") as f_dst:
+                f_dst.write(f_src.read())
+
+        print("📸 Using stock placeholder:", dst)
+        return dst
+
+    print("⚠️ No stock fallback image found.")
+    return None
+
+
+if __name__ == "__main__":
+    generate_image(
+        "Colorful modern Indian interior wall paint, realistic, soft lighting",
+        "test-image"
+    )
