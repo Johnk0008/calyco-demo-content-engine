@@ -5,13 +5,21 @@
 This repository contains a **fully automated content-generation pipeline** built for the **Calyco AI Content Engine demo**, designed to meet the recruiter’s requirements:
 
 ✔ No paid APIs
+
 ✔ Fully automated
+
 ✔ End-to-end text + images
+
 ✔ Blog, social, ads, web copy
+
 ✔ Free image generation fallback system
+
 ✔ Trend + competitor scraping
+
 ✔ SEO outputs (JSON-LD, sitemap)
+
 ✔ Quality checks
+
 ✔ Dashboard UI
 
 ---
@@ -38,9 +46,13 @@ Since paid LLMs (OpenAI, Claude, Gemini Pro/Image) were not allowed, the pipelin
 Outputs generated:
 
 ✔ Web Copy (JSON)
+
 ✔ Blog (Markdown)
+
 ✔ Social Posts (JSON)
+
 ✔ Ad Copy (JSON)
+
 ✔ SEO Metadata (HTML meta tags, JSON-LD)
 
 ---
@@ -90,6 +102,7 @@ assets/placeholder.jpg
 ```
 
 🔒 **Guarantee:** The pipeline will ALWAYS return an image.
+
 💯 **Meets All requirement fully.**
 
 ---
